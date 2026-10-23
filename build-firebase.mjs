@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+execFileSync(process.execPath,['build.mjs'],{cwd:new URL('./dots-and-boxes/',import.meta.url),stdio:'inherit'});
+let html=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
+const backend='https://paper-dots-badhon.mighty-goose-8470.chatgpt.site';
+html=html.replace("$('#onlineTab').onclick=()=>{window.location.href='"+backend+"/';};","$('#onlineTab').onclick=()=>setMode(true);");
+html=html.replaceAll("fetch('/api/", "fetch('"+backend+"/api/");
+fs.mkdirSync(new URL('./firebase-public/',import.meta.url),{recursive:true});
+for(const name of ['favicon.png','apple-touch-icon.png'])fs.copyFileSync(new URL('./assets/'+name,import.meta.url),new URL('./firebase-public/'+name,import.meta.url));
+const icon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#44392f"/><rect x="16" y="16" width="32" height="32" rx="3" fill="#00b9be"/><path d="M16 16h32v32" fill="none" stroke="#fff6e5" stroke-width="5"/><path d="M16 16v32h32" fill="none" stroke="#ff426b" stroke-width="5"/><g fill="#fffaf1"><circle cx="16" cy="16" r="6"/><circle cx="48" cy="16" r="6"/><circle cx="16" cy="48" r="6"/><circle cx="48" cy="48" r="6"/></g></svg>';
+fs.writeFileSync(new URL('./firebase-public/favicon.svg',import.meta.url),icon);
+html=html.replace('</head>','<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1"></head>');
+fs.writeFileSync(new URL('./firebase-public/index.html',import.meta.url),html);
+console.log('Firebase build ready with connected multiplayer API.');

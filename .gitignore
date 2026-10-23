@@ -1,0 +1,18 @@
+# Generated output and caches
+.firebase/
+firebase-public/
+dots-and-boxes/dist/
+/index.html
+*.tar.gz
+*.log
+node_modules/
+
+# Local secrets and machine configuration
+.env
+.env.*
+!.env.example
+*.pem
+*service-account*.json
+firebase-debug.log
+.DS_Store
+Thumbs.db

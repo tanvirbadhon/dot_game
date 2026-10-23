@@ -1,0 +1,11 @@
+DOTS & BOXES - PROJECT PROCESS
+
+Languages: HTML for page structure, CSS for responsive design and animation, JavaScript for game logic, computer opponents, sound and online interactions, SVG for graphics, and SQL for database tables.
+
+Tools: Node.js builds the project and runs local development and tests. Computer difficulty uses game-search logic. Sound effects use the Web Audio API.
+
+Hosting: Firebase Hosting serves the website at https://dotgame.web.app on the Spark plan. The existing OpenAI Sites deployment runs the Cloudflare Worker multiplayer API.
+
+Database: Cloudflare D1 stores room codes, player names, hashed membership tokens, moves and scores. Rooms expire after 30 minutes without a game action; expired rows are deleted during subsequent API activity. Temporary browser storage supports reconnecting after refresh. Browser preferences store volume, sound, theme, animation and shadow settings.
+
+Process: Build the interface, implement game rules and computer strategy, add server-validated multiplayer rooms, test, and deploy. Run node build-firebase.mjs to generate Firebase files. Run npx firebase-tools deploy --only hosting after signing in to publish updates. GitHub stores the source; it does not run the multiplayer database.
