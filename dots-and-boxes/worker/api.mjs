@@ -11,6 +11,8 @@ export async function api(req,env,ctx){
  const u=new URL(req.url);if(req.method!=='GET'&&req.method!=='POST')return json({error:'Method not allowed'},405);
  if(req.method==='POST'&&req.headers.get('origin')&&req.headers.get('origin')!==u.origin&&!['https://dotgame.web.app','https://dotgame.firebaseapp.com'].includes(req.headers.get('origin')))return json({error:'Invalid origin'},403);
  if(+(req.headers.get('content-length')||0)>2048)return json({error:'Request too large'},413);
+ // Wake the database while a player fills the online setup, without touching rooms.
+ if(u.pathname==='/api/ready'&&req.method==='GET'){await env.DB.prepare('SELECT 1 AS ready').bind().first();return json({ready:true});}
  const b=req.method==='POST'?await req.json():{};
  const now=Date.now();if(ctx?.waitUntil)ctx.waitUntil(cleanupRooms(env,now).catch(e=>{lastRoomCleanup=0;console.error('Room cleanup:',e.message);}));else await cleanupRooms(env,now);
  let name;const checkedName=()=>{const result=validatePlayerName(b.name);if(result.error)throw Error(result.error);return result.name;};
