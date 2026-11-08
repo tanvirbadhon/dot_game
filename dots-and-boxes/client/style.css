@@ -241,7 +241,7 @@ header{border-bottom-color:#a1baff22}.brand-logo text{fill:#eef5ff}.brand-logo t
 .sound-settings output{background:#25344f;color:#8dfbeb}.sound-settings input[type="range"]{background:linear-gradient(to right,#32dccc 0 var(--volume-fill,65%),#43526e var(--volume-fill,65%) 100%)}
 .how-step p{color:#b4c4dc}.how-step p b,.how b{color:#e7f1ff}.how-step>span{background:#47dcd825;color:#80f6e6}
 .or{color:#d7e3f9}.or:before,.or:after{background:#839ac143}
-.menu input{color:#eaf2ff;background:#0e1a30;border-color:#60779b80}.menu input::placeholder{color:#92a7c7}.menu input:focus{background:#13253e;border-color:#4edbdc}
+.menu input{color:#eaf2ff;background:#0e1a30;border-color:#60779b80}.menu input::placeholder{color:#92a7c7}.menu input:not([type="range"]):focus{background:#13253e;border-color:#4edbdc}
 .join button{background:#079ca9;color:#fff;border-color:#62e7e5}.menu #roomBack{color:#c5dbf7;background:#1f304d}
 .theme-board-preview{background-color:#16243bbb;border-color:#6e8cba77;box-shadow:0 3px 0 #03091666}
 .game-top,#game .substatus,.game-bottom>span{color:#b4c7e3}
