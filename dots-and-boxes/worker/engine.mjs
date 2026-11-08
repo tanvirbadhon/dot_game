@@ -1,5 +1,10 @@
 export function boardRows(cols){return ({3:2,4:3,5:4,6:5,8:6,11:9})[cols];}
 export function newGame(count=2,cols=5){return {count,cols,rows:boardRows(cols),players:[],edges:{},boxes:{},scores:Array(count).fill(0),turn:0,status:'waiting',round:1};}
+export function winProgress(game){
+ const total=game.cols*game.rows,target=Math.floor(total/2)+1,remaining=Math.max(0,total-game.scores.reduce((sum,score)=>sum+score,0));
+ const winner=game.scores.findIndex((score,player)=>score>Math.max(...game.scores.filter((_,i)=>i!==player))+remaining);
+ return {total,target,remaining,winner};
+}
 export function move(s,key,player,from){
  if(s.status!=='playing')throw Error('The game has not started.');
  if(player!==s.turn)throw Error('Wait for your turn.');

@@ -26,4 +26,6 @@ Online turns allow 40 seconds plus a visible 20-second warning. At 60 seconds th
 
 Mouse, finger and pen input select the nearest dot within its non-overlapping grid cell. Nearby clicks/taps and drag releases snap to dots on both PC and mobile. Only adjacent dots can connect.
 
+The win target is floor(total boxes / 2) + 1: 100 boxes requires 51, and the 11 × 9 board requires 50 of 99. A player also secures victory when no opponent can catch their score with the remaining boxes. This shows a WIN badge without stopping play. Completed boards report results inline, with Play again and Main menu controls; forfeits keep their explanatory dialogs. Online guests continue listening for the host's next round.
+
 Computer matches save locally after each state change and can be continued after refresh for 30 minutes without a move. Completed matches and explicitly abandoned computer matches delete their save. No computer-match state is sent to the database.

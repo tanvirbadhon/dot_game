@@ -2,6 +2,8 @@
 
 Responsive Dots & Boxes with computer opponents and online rooms for 2–4 players.
 
+Each board shows its total boxes and guaranteed win target (more than half). Once a player cannot be caught, a WIN badge appears while the remaining boxes stay playable. Completed boards use inline results and Play again/Main menu controls; timeout and opponent-leave explanations still use dialogs.
+
 Live site: https://dotgame.web.app/
 
 Source repository: https://github.com/tanvirbadhon/dot_game

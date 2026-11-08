@@ -327,3 +327,15 @@ body[data-theme="sunset"] .edge.taken:before{background:#b293c5}
 #joinNameDialog #confirmJoinName:disabled,.reconnect-card button:disabled,#resultDialog[data-outcome] .arcade-button:disabled{background:#2a3d58;color:#c5d5eb;border-color:#6e86a8;opacity:1;box-shadow:none}
 body[data-theme="wood"] .edge:not(.taken):before{background:#586f8d}
 body[data-theme="classic"] .edge:not(.taken):before{background:#7e8591;box-shadow:none}
+
+.win-target{flex:1;min-width:min(250px,100%);max-width:100%;padding:13px 16px;background:#14243bea;border:1px solid #698ab96b;border-radius:14px;color:#eaf4ff;overflow-wrap:anywhere}
+.win-target[hidden]{display:none}.win-target-label{display:block;color:#a9c0e3;font:800 10px/1.4 Outfit,sans-serif;letter-spacing:1.5px;margin-bottom:4px}
+.win-target>strong{display:block;color:#8af7e7;font:800 24px/1.2 Outfit,sans-serif}
+#winTargetDetails{margin:7px 0 0;font-size:12px;line-height:1.5;color:#c7d8f0}
+#winTargetNotice{margin:5px 0 0;font-size:12px;line-height:1.5;color:#b9d0ed}
+.win-target.secured{border-color:var(--winner-color,#70f5dd);background:#15333fe8}.win-target.secured .win-target-label{color:#9fffe8}
+.score.win-secured{border-color:var(--color);box-shadow:0 0 0 1px color-mix(in srgb,var(--color) 25%,transparent)}
+.score .win-badge{position:absolute;right:10px;top:-10px;z-index:1;padding:3px 9px;border:1px solid #a5ffeb;border-radius:20px;background:#70f5dd;color:#062d3a;font:900 11px/1.2 Outfit,sans-serif;letter-spacing:1px;box-shadow:0 2px 6px #06112280}
+.game-bottom #rematch,.game-bottom #finishedMenu{min-height:44px;padding:10px 15px;border:1px solid #7396c077;border-radius:11px;background:#213650;color:#e4f6ff;font-weight:700}
+.game-bottom #rematch:hover,.game-bottom #finishedMenu:hover{background:#2b4769}
+@media(max-width:600px){.win-target{width:100%;min-width:0;padding:13px 15px}.win-target>strong{font-size:22px}.score .win-badge{right:8px}}

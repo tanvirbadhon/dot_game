@@ -8,6 +8,8 @@ function resultSummary(game,localPlayer=0){
 }
 function refreshResult(){
  if(!['finished','abandoned'].includes(s.status)){if($('#resultDialog').open)$('#resultDialog').close();shownResultRound=null;return;}
+ // Completed boards report their result inline; forfeits still explain the ending.
+ if(s.status==='finished'&&!s.finishReason){if($('#resultDialog').open)$('#resultDialog').close();shownResultRound=null;return;}
  const id=`${room||'local'}-${s.round}`;if(shownResultRound===id)return;shownResultRound=id;
  const outcome=resultSummary(s,room?s.me:0);$('#resultTitle').textContent=outcome.title;$('#resultSubtitle').textContent=outcome.subtitle;
  $('#resultDialog').dataset.reason=outcome.left?'opponent-left':s.finishReason||'score';
@@ -19,6 +21,7 @@ function refreshResult(){
 }
 $('#resultAgain').onclick=()=>{if(busy)return;if(room)action('rematch');else{$('#resultDialog').close();$('#rematch').click();}};
 $('#resultMenu').onclick=requestLeave;
+$('#finishedMenu').onclick=requestLeave;
 $('#resultSettings').onclick=()=>{refreshSettings();$('#settingsDialog').showModal();};
 $('#resultDialog').oncancel=e=>e.preventDefault();
 function updatePlayerPreview(){const count=+$('#count').value;$('#playerPreview').replaceChildren();for(let i=0;i<count;i++){const icon=document.createElement('span');icon.className='avatar'+(i>0?' computer-avatar':'');icon.style.background=colors[i];icon.title=online?`Player ${i+1}`:i===0?'You':'Computer '+i;icon.setAttribute('aria-label',icon.title);if(online)icon.classList.remove('computer-avatar');$('#playerPreview').append(icon);}}
