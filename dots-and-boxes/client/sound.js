@@ -43,7 +43,7 @@ function soundState(game){return {room:room||'computer',round:game.round,status:
 function soundEvent(before,after){
  if(!before||before.room!==after.room)return null;
  if(after.round!==before.round||after.lines<before.lines)return after.status==='playing'?'start':null;
- if(after.status==='finished'&&before.status!=='finished'){if(after.resultWinners)return after.resultWinners.includes(after.me)?'win':'loss';const high=Math.max(...after.scores),winners=after.scores.filter(v=>v===high).length;return winners>1?'tie':after.scores[after.me]===high?'win':'loss';}
+ if(after.status==='finished'&&before.status!=='finished'){if(after.resultWinners)return after.resultWinners.includes(after.me)?'win':'loss';const high=Math.max(...after.scores),winners=after.scores.filter(v=>v===high).length;return after.scores[after.me]===high?(winners>1?'tie':'win'):'loss';}
  if(before.status==='waiting'&&after.status==='playing')return 'start';
  if(after.boxes>before.boxes)return 'box';
  if(after.lines>before.lines)return 'line';

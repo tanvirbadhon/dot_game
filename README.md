@@ -2,7 +2,7 @@
 
 Responsive Dots & Boxes with computer opponents and online rooms for 2–4 players.
 
-Each board shows its total boxes and guaranteed win target (more than half). Once a player cannot be caught, a WIN badge appears while the remaining boxes stay playable. Completed boards use inline results and Play again/Main menu controls; timeout and opponent-leave explanations still use dialogs.
+Players see live positions and secured places while a match continues. Two-player games show a majority win target; three- and four-player games use standings instead. When every box is claimed, a result popup shows the complete ranked player list. Equal scores share a place.
 
 Live site: https://dotgame.web.app/
 

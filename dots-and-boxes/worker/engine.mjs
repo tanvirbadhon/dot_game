@@ -5,6 +5,17 @@ export function winProgress(game){
  const winner=game.scores.findIndex((score,player)=>score>Math.max(...game.scores.filter((_,i)=>i!==player))+remaining);
  return {total,target,remaining,winner};
 }
+export function ordinalPlace(place){return place+({1:'st',2:'nd',3:'rd'}[place]||'th');}
+export function playerStandings(game){
+ const remaining=Math.max(0,game.cols*game.rows-game.scores.reduce((a,b)=>a+b,0));
+ const forfeited=Number.isInteger(game.forfeited)?game.forfeited:game.status==='abandoned'?game.players.findIndex(p=>p.name===game.leftBy):-1;
+ return game.scores.map((score,player)=>{
+  const place=forfeited>=0?(player===forfeited?game.scores.length:1):1+game.scores.filter(other=>other>score).length;
+  const tied=forfeited>=0?player!==forfeited&&game.scores.length>2:game.scores.filter(other=>other===score).length>1;
+  const secured=forfeited>=0||remaining===0||game.scores.every((other,i)=>i===player||Math.abs(score-other)>remaining);
+  return {player,score,place,tied,secured,label:ordinalPlace(place)};
+ }).sort((a,b)=>a.place-b.place||b.score-a.score||a.player-b.player);
+}
 export function move(s,key,player,from){
  if(s.status!=='playing')throw Error('The game has not started.');
  if(player!==s.turn)throw Error('Wait for your turn.');

@@ -339,3 +339,39 @@ body[data-theme="classic"] .edge:not(.taken):before{background:#7e8591;box-shado
 .game-bottom #rematch,.game-bottom #finishedMenu{min-height:44px;padding:10px 15px;border:1px solid #7396c077;border-radius:11px;background:#213650;color:#e4f6ff;font-weight:700}
 .game-bottom #rematch:hover,.game-bottom #finishedMenu:hover{background:#2b4769}
 @media(max-width:600px){.win-target{width:100%;min-width:0;padding:13px 15px}.win-target>strong{font-size:22px}.score .win-badge{right:8px}}
+
+/* One centered monitor drawing keeps the screen and stand aligned at every size. */
+.computer-avatar:before{content:'';position:absolute;left:17%;top:17%;width:66%;height:66%;border:0;border-radius:0;box-shadow:none;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='12' rx='2'/%3E%3Cpath d='M12 16v4M8 20h8'/%3E%3C/svg%3E")}
+.computer-avatar:after{display:none;content:none;box-shadow:none}
+.score .rank-badge{position:absolute;right:9px;top:-10px;z-index:1;max-width:calc(100% - 16px);padding:3px 8px;border:1px solid #779ac780;border-radius:20px;background:#233b59;color:#dcecff;font:800 10px/1.3 Outfit,sans-serif;letter-spacing:.35px;white-space:nowrap;box-shadow:0 2px 5px #06112280}
+.score .rank-badge.locked{background:#244658;color:#bbf6ef;border-color:#80c9ce80}
+.score .rank-badge.rank-win{background:#70f5dd;color:#062d3a;border-color:#a5ffeb}
+
+#resultDialog{padding:20px 16px;background:transparent;overflow:auto;overscroll-behavior:contain}
+#resultDialog::backdrop,#resultDialog[data-reason="opponent-left"]::backdrop{background:radial-gradient(ellipse at 50% 30%,#102b43f0,#030817f5)}
+#resultDialog .result-content{width:100%;max-width:590px;min-height:0;margin:12px auto;padding:24px;border:1px solid #7c9bc45c;border-radius:24px;background:linear-gradient(145deg,#17263ff5,#0c1528f5);box-shadow:0 18px 60px #0006;--placement-color:#8ff5d8}
+#resultDialog[data-place="2"] .result-content{--placement-color:#d4e2ff}#resultDialog[data-place="3"] .result-content{--placement-color:#ffc78f}#resultDialog[data-place="4"] .result-content{--placement-color:#d9c2ff}
+.result-eyebrow{font:800 10px/1.4 Outfit,sans-serif;letter-spacing:2.2px;color:#9eeae1}
+#resultDialog .result-content h2{padding:0;margin:8px 0;font-size:clamp(30px,5vw,46px);line-height:1.1;text-shadow:none}
+#resultDialog .result-content>p{font:500 15px/1.5 Outfit,sans-serif;max-width:460px;margin:0 0 10px;text-shadow:none}
+#resultDialog .winner-medal{width:160px;height:120px;margin:4px auto 18px;background:radial-gradient(circle,#7599d31c,transparent 65%);border-radius:50%}
+#resultDialog .medal-star{display:none}
+#resultDialog[data-outcome] .result-avatar{width:86px;height:86px;background:var(--winner-color);box-shadow:0 0 0 6px #adcfff12,0 4px 0 #03091a66;border:2px solid #d3e5ff66}
+.result-placement{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);z-index:3;white-space:nowrap;padding:5px 16px;border:1px solid var(--placement-color);border-radius:20px;background:#1d314d;color:var(--placement-color);font:800 19px/1.2 Outfit,sans-serif}
+#resultDialog[data-outcome="tie"] .result-avatar:before{font-size:48px;left:50%;top:50%;transform:translate(-50%,-50%)}
+#resultDialog .result-scores{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;width:100%;max-width:none;margin:0 0 18px}
+#resultDialog .result-score{position:relative;display:grid;grid-template-columns:44px 40px minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;min-height:66px;padding:10px 12px;border:1px solid #667fa25c;border-radius:14px;background:#182a43;text-align:left}
+#resultDialog .result-score.winner{background:linear-gradient(110deg,#36513d66,#183448);border-color:#b4bd8266}
+#resultDialog .result-score.your-result{border-color:var(--color);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--color) 25%,transparent)}
+.result-rank{display:grid;place-items:center;min-height:36px;border-radius:10px;background:#4562862b;color:#c8d9ef;font:800 17px Outfit,sans-serif}
+.result-score[data-place="1"] .result-rank{background:#ffc65a24;color:#ffe2a0}.result-score[data-place="2"] .result-rank{color:#deebff}.result-score[data-place="3"] .result-rank{color:#ffc99e}.result-score[data-place="4"] .result-rank{color:#d9c6ff}
+#resultDialog .result-score .avatar{position:relative;width:40px;height:40px;margin:0;left:auto;top:auto;transform:none;border:2px solid #d0e6ff55;box-shadow:0 2px 0 #0004}
+.result-player{min-width:0}.result-player b{display:block;color:#edf5ff;font:700 16px/1.3 Outfit,sans-serif;overflow-wrap:anywhere}
+#resultDialog .result-player small{display:block;max-width:none;font:700 10px/1.4 Outfit,sans-serif;letter-spacing:.5px;color:#b5cbe6;margin-top:3px}
+.result-points{text-align:right;min-width:38px}#resultDialog .result-points strong{display:block;font:800 30px/1 Outfit,sans-serif;color:#f4f8ff;font-variant-numeric:tabular-nums}
+#resultDialog .result-points small{display:block;max-width:none;color:#b5cbe6;font-size:10px;margin-top:3px}
+.result-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+#resultDialog .result-actions .arcade-button{width:100%;min-height:50px;margin:0;padding:10px;border-width:3px;font-size:20px;line-height:1.2}
+#resultDialog .result-content #resultWait{min-height:0;margin:12px 0 0;font-size:12px;line-height:1.5;max-width:100%}#resultDialog #resultWait:empty{display:none}
+@media(max-width:480px){#resultDialog{padding:12px}#resultDialog .result-content{padding:20px 14px;border-radius:20px;margin:12px auto}#resultDialog .result-score{grid-template-columns:36px 34px minmax(0,1fr) auto;gap:8px;padding:10px;min-height:62px}#resultDialog .result-score .avatar{width:34px;height:34px}.result-rank{font-size:15px}.result-player b{font-size:14px}#resultDialog .result-points strong{font-size:28px}#resultDialog .result-actions .arcade-button{font-size:18px}}
+#resultDialog .result-actions:has(#resultAgain[hidden]){grid-template-columns:1fr}

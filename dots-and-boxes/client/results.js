@@ -4,18 +4,29 @@ function resultSummary(game,localPlayer=0){
  const forfeited=Number.isInteger(game.forfeited)?game.forfeited:left?game.players.findIndex(p=>p.name===game.leftBy):-1;
  const high=Math.max(...game.scores),winners=forfeited>=0?game.scores.map((_,i)=>i).filter(i=>i!==forfeited):game.resultWinners||game.scores.map((score,i)=>score===high?i:-1).filter(i=>i>=0);
  const tie=!left&&game.finishReason!=='timeout'&&forfeited<0&&!game.resultWinners&&winners.length>1,winner=winners[0],won=winners.includes(localPlayer);
- return {winner,winners,tie,won,left,title:tie?'IT’S A TIE!':won?'YOU WIN!':'YOU LOSE',subtitle:left?(won?'Opponent left the match. You win!':'You left the match.'):game.finishReason==='timeout'?(won?'Opponent ran out of time.': 'Time ran out. Make a move before the countdown ends.'):tie?'Evenly matched. One more round?':won?'Good game! Nicely played.':'Good game! Ready for a comeback?'};
+ const standings=playerStandings(game),position=standings.find(row=>row.player===localPlayer),place=position.place,label=(position.tied?'joint ':'')+position.label;
+ const title=tie?(won?(game.scores.length===2?'IT’S A TIE!':'JOINT 1ST!'):'YOU LOSE'):won?'YOU WIN!':'YOU LOSE';
+ const subtitle=left?(won?'Opponent left the match. You win!':'You left the match.'):game.finishReason==='timeout'?(won?'Opponent ran out of time.':'Time ran out. Make a move before the countdown ends.'):tie&&won?'You finished '+label+'. First place is shared.':won?'1st place! You finished with '+game.scores[localPlayer]+' boxes.':'You finished '+label+' of '+game.scores.length+' players. Ready for a comeback?';
+ return {winner,winners,tie,won,left,title,subtitle,standings,place};
 }
 function refreshResult(){
  if(!['finished','abandoned'].includes(s.status)){if($('#resultDialog').open)$('#resultDialog').close();shownResultRound=null;return;}
- // Completed boards report their result inline; forfeits still explain the ending.
- if(s.status==='finished'&&!s.finishReason){if($('#resultDialog').open)$('#resultDialog').close();shownResultRound=null;return;}
  const id=`${room||'local'}-${s.round}`;if(shownResultRound===id)return;shownResultRound=id;
- const outcome=resultSummary(s,room?s.me:0);$('#resultTitle').textContent=outcome.title;$('#resultSubtitle').textContent=outcome.subtitle;
+ const local=room?s.me:0,outcome=resultSummary(s,local);$('#resultTitle').textContent=outcome.title;$('#resultSubtitle').textContent=outcome.subtitle;
  $('#resultDialog').dataset.reason=outcome.left?'opponent-left':s.finishReason||'score';
- $('#resultDialog').dataset.outcome=outcome.tie?'tie':outcome.won?'win':'loss';
- const badge=$('#resultAvatar');badge.className='avatar result-avatar'+(s.computer&&s.players[outcome.winner]?.computer?' computer-avatar':'');badge.style.setProperty('--winner-color',outcome.tie?'#04bfc8':colors[outcome.winner]);badge.setAttribute('aria-label',outcome.title);
- $('#resultScores').replaceChildren();for(let i=0;i<s.count;i++){const item=document.createElement('div');item.className='result-score'+(outcome.winners.includes(i)?' winner':'');item.style.setProperty('--color',colors[i]);const icon=document.createElement('span');icon.className='avatar'+(s.players[i]?.computer?' computer-avatar':'');icon.style.background=colors[i];const score=document.createElement('strong');score.textContent=s.scores[i];const name=document.createElement('small');name.textContent=playerName(i);item.append(icon,score,name);$('#resultScores').append(item);}
+ $('#resultDialog').dataset.outcome=outcome.tie&&outcome.won?'tie':outcome.won?'win':'loss';$('#resultDialog').dataset.place=outcome.place;
+ $('.result-eyebrow').textContent=outcome.left?'MATCH ENDED':s.finishReason==='timeout'?'TIME UP':'FINAL STANDINGS';
+ const localRank=outcome.standings.find(row=>row.player===local);$('#resultPlacement').textContent=(localRank.tied?'Joint ':'')+localRank.label;
+ const badge=$('#resultAvatar');badge.className='avatar result-avatar'+(s.computer&&s.players[local]?.computer?' computer-avatar':'');badge.style.setProperty('--winner-color',colors[local]);badge.setAttribute('aria-label',playerName(local)+' — '+localRank.label+' place');
+ $('#resultScores').replaceChildren();$('#resultScores').setAttribute('role','list');$('#resultScores').setAttribute('aria-label','Final player standings');
+ for(const rank of outcome.standings){
+  const i=rank.player,item=document.createElement('div');item.className='result-score'+(outcome.winners.includes(i)?' winner':'')+(i===local?' your-result':'');item.dataset.place=rank.place;item.style.setProperty('--color',colors[i]);item.setAttribute('role','listitem');
+  const place=document.createElement('span');place.className='result-rank';place.textContent=rank.label;
+  const icon=document.createElement('span');icon.className='avatar'+(s.players[i]?.computer?' computer-avatar':'');icon.style.background=colors[i];
+  const details=document.createElement('div');details.className='result-player';const name=document.createElement('b');name.textContent=playerName(i);const note=document.createElement('small');note.textContent=(i===local?'YOU · ':'')+(i===s.forfeited?(outcome.left?'LEFT MATCH':'TIMED OUT'):rank.place===1?(rank.tied?'JOINT WINNER':'WINNER'):rank.tied?'JOINT '+rank.label.toUpperCase()+' PLACE':rank.place===2?'RUNNER-UP':rank.label.toUpperCase()+' PLACE');details.append(name,note);
+  const points=document.createElement('div');points.className='result-points';const score=document.createElement('strong');score.textContent=s.scores[i];const unit=document.createElement('small');unit.textContent='boxes';points.append(score,unit);
+  item.append(place,icon,details,points);item.setAttribute('aria-label',(rank.tied?'Joint ':'')+rank.label+': '+playerName(i)+', '+s.scores[i]+' boxes');$('#resultScores').append(item);
+ }
  $('#resultAgain').hidden=outcome.left;$('#resultAgain').disabled=!!room&&s.me!==0;$('#resultWait').textContent=outcome.left?'Return to the main menu to start a new match.':room&&s.me!==0?'Waiting for the host to start the next round.':'';
  if($('#settingsDialog').open)$('#settingsDialog').close();$('#resultDialog').showModal();
 }

@@ -1,5 +1,5 @@
-const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');const source=fs.readFileSync('client/results.js','utf8').split('function refreshResult(){')[0],context={};vm.createContext(context);vm.runInContext(source,context);
-const game=scores=>({scores,players:scores.map((_,i)=>({name:i===0?'You':i===1?'Computer':'Player '+(i+1)}))});
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');const {playerStandings}=require('./worker/engine.mjs');const source=fs.readFileSync('client/results.js','utf8').split('function refreshResult(){')[0],context={playerStandings};vm.createContext(context);vm.runInContext(source,context);
+const game=scores=>({cols:5,rows:4,scores,players:scores.map((_,i)=>({name:i===0?'You':i===1?'Computer':'Player '+(i+1)}))});
 assert.equal(context.resultSummary(game([8,4])).title,'YOU WIN!');assert.equal(context.resultSummary(game([3,9])).title,'YOU LOSE');assert.equal(context.resultSummary(game([6,6])).tie,true);assert.equal(context.resultSummary(game([3,5,7,5]),2).won,true);assert.equal(context.resultSummary(game([3,5,7,5]),0).won,false);assert.equal(context.resultSummary(game([6,6,3,5]),0).winners.length,2);console.log('Passed: win, loss, tie, four-player scores, and online player perspective.');
 
 assert.equal(context.resultSummary({...game([0,0]),finishReason:'timeout',forfeited:1},0).title,'YOU WIN!');assert.equal(context.resultSummary({...game([0,0]),finishReason:'timeout',forfeited:1},1).title,'YOU LOSE');
