@@ -1,0 +1,10 @@
+import fs from 'node:fs';import {bundleClientScript} from './client-bundle.mjs';import {exportPreview} from './export-preview.mjs';
+fs.mkdirSync('dist/server',{recursive:true});fs.mkdirSync('dist/.openai',{recursive:true});
+const engine=fs.readFileSync('worker/engine.mjs','utf8').replaceAll('export ','');
+const assets={};for(const f of ['index.html','style.css','game.js','wood.svg','logo.svg'])assets['/'+(f==='index.html'?'':f)]=f==='game.js'?bundleClientScript():fs.readFileSync('client/'+f,'utf8');
+const api=fs.readFileSync('worker/api.mjs','utf8').replace(/^import .*;\r?\n/,'').replace('export async function','async function');
+fs.writeFileSync('dist/server/index.js',engine+'\n'+api+'\nconst assets='+JSON.stringify(assets)+`;\nexport default {async fetch(request,env,ctx){const p=new URL(request.url).pathname;if(p.startsWith('/api/')){const origin=request.headers.get('Origin');const allowed=['https://dotgame.web.app','https://dotgame.firebaseapp.com'].includes(origin);if(request.method==='OPTIONS')return new Response(null,{status:allowed?204:403,headers:allowed?{'Access-Control-Allow-Origin':origin,'Access-Control-Allow-Methods':'GET, POST, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Authorization','Access-Control-Max-Age':'86400','Vary':'Origin'}:{}});const response=await api(request,env,ctx);if(allowed){const headers=new Headers(response.headers);headers.set('Access-Control-Allow-Origin',origin);headers.set('Vary','Origin');return new Response(response.body,{status:response.status,headers});}return response;}const body=assets[p];if(body===undefined)return new Response('Not found',{status:404});return new Response(body,{headers:{'Content-Type':p.endsWith('.svg')?'image/svg+xml':p.endsWith('.css')?'text/css':p.endsWith('.js')?'text/javascript':'text/html; charset=utf-8','Cache-Control':'no-cache','X-Content-Type-Options':'nosniff'}});}};`);
+fs.copyFileSync('.openai/hosting.json','dist/.openai/hosting.json');console.log('Worker and client built.');
+
+
+exportPreview();

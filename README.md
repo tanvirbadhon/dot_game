@@ -4,6 +4,8 @@ Responsive Dots & Boxes with computer opponents and online rooms for 2–4 playe
 
 Live site: https://dotgame.web.app/
 
+Source repository: https://github.com/tanvirbadhon/dot_game
+
 ## Build and preview
 
 Requires Node.js 24 or newer.
@@ -37,3 +39,7 @@ Deployment requires access to the owner's Firebase project. Firebase serves the 
 - `process.txt`: short technology and implementation summary.
 
 Generated builds, caches, logs and local secrets are excluded by `.gitignore`. Never commit Firebase tokens, service-account files or `.env` secrets.
+
+After verifying a game update, commit and push the current source to this repository as well as publishing it. The game directory is stored as ordinary source files, so cloning or downloading the repository includes the complete project. Its separate local Sites Git metadata is not part of the GitHub upload.
+
+Run `node stage-source.mjs` before committing to stage the game source correctly when a local Sites checkout is present. Stage changed root files normally, review the staged diff, then commit and push to `origin main`.

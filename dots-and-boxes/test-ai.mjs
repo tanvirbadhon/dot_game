@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';import {newGame,move} from './worker/engine.mjs';import {chooseComputerMove,legalMoves} from './worker/ai.mjs';
+const g=newGame(2,4);g.status='playing';move(g,'h-0-0',0);move(g,'v-0-0',1);move(g,'h-1-0',0);for(const level of ['hard','expert'])assert.equal(chooseComputerMove(g,level,()=>0),'v-0-1');
+const safe=newGame(2,4);safe.status='playing';move(safe,'h-0-0',0);move(safe,'v-0-0',1);const choice=chooseComputerMove(safe,'hard',()=>0);assert.notEqual(choice,'h-1-0');assert.notEqual(choice,'v-0-1');
+for(const count of [2,3,4])for(const level of ['easy','hard','expert']){const game=newGame(count,4);game.status='playing';let turns=0;while(game.status==='playing'){const key=chooseComputerMove(game,level,()=>.37);assert(legalMoves(game).includes(key));move(game,key,game.turn);assert(++turns<100);}assert.equal(game.scores.reduce((a,b)=>a+b,0),12);assert.equal(legalMoves(game).length,0);console.log(`${count} players / ${level}: full game and legal turns passed.`);}
+console.log('Computer captures completed boxes, avoids unsafe moves on Hard, and finishes all games.');

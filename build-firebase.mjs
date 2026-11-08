@@ -2,8 +2,9 @@ import fs from 'node:fs';
 import {execFileSync} from 'node:child_process';
 execFileSync(process.execPath,['build.mjs'],{cwd:new URL('./dots-and-boxes/',import.meta.url),stdio:'inherit'});
 let html=fs.readFileSync(new URL('./index.html',import.meta.url),'utf8');
-const backend='https://paper-dots-badhon.mighty-goose-8470.chatgpt.site';
+const backend='https://paper-dots-badhon.lizasuraiya44.chatgpt.site';
 html=html.replace("$('#onlineTab').onclick=()=>{window.location.href='"+backend+"/';};","$('#onlineTab').onclick=()=>setMode(true);");
+html=html.replace('</head>','<link rel="preconnect" href="'+backend+'" crossorigin><link rel="dns-prefetch" href="'+backend+'"></head>');
 html=html.replaceAll("fetch('/api/", "fetch('"+backend+"/api/");
 fs.mkdirSync(new URL('./firebase-public/',import.meta.url),{recursive:true});
 for(const name of ['favicon.png','apple-touch-icon.png'])fs.copyFileSync(new URL('./assets/'+name,import.meta.url),new URL('./firebase-public/'+name,import.meta.url));
@@ -12,3 +13,5 @@ fs.writeFileSync(new URL('./firebase-public/favicon.svg',import.meta.url),icon);
 html=html.replace('</head>','<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=1"><link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1"></head>');
 fs.writeFileSync(new URL('./firebase-public/index.html',import.meta.url),html);
 console.log('Firebase build ready with connected multiplayer API.');
+
+execFileSync(process.execPath,['test-client-bundle.mjs'],{cwd:new URL('./dots-and-boxes/',import.meta.url),stdio:'inherit'});
