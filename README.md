@@ -2,7 +2,7 @@
 
 Responsive Dots & Boxes with computer opponents and online rooms for 2–4 players.
 
-Two-player games show a majority win target. Three- and four-player boards show an estimated winner from possible next lines, with no live placement badges. Only an unbeatable score receives a WIN badge; play continues. When every box is claimed, a result popup shows the complete ranked player list. Equal scores share a place.
+Two-player games show a majority win target. Three- and four-player boards have no prediction panel or live placement badges. Only an unbeatable score receives a WIN badge; play continues. When every box is claimed, a result popup shows the complete ranked player list. Equal scores share a place; a tie for the highest score is shown as DRAW.
 
 Live site: https://dotgame.web.app/
 
